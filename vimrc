@@ -1,10 +1,11 @@
-" Install the following:
+:
 "
 " https://github.com/tpope/vim-pathogen
 " https://github.com/scrooloose/syntastic
 " https://github.com/jeetsukumaran/vim-buffergator
 " https://github.com/ctrlpvim/ctrlp.vim
 " https://github.com/noah/vim256-color
+" https://github.com/octol/vim-cpp-enhanced-highlight
 
 " Some keys:
 " <Ctrl-w> s         Split screen horizontally.
@@ -22,42 +23,52 @@
 " \ <cursor>         Split focused view in this direction.
 " <Ctrl-p>           Open ctrlp.vim for opening files.
 
+" Loader for plugins.                                                           
+execute pathogen#infect()
 
-colors elflord
-" colors industry
-
-set nocompatible                           " Prevent vim from emulating vi
-syntax on                                  " Syntax highlighting
-set showmatch                              " Show matching [] and {}
+set nocompatible                          " Prevent vim from emulating vi
+syntax on                                 " Syntax highlighting
+set showmatch                             " Show matching [] and {}           
+set colorcolumn=80                        " Mark 80 columns with red bar
+set shell=/bin/bash                       " Set shell to bash
                                            " Make tab key emmit 2 spaces.
 set tabstop=2 softtabstop=2 shiftwidth=2 expandtab cindent
-set number                                 " Line numbers
-set colorcolumn=80                         " Mark 80 colums with red bar
-set shell=/bin/bash                        " Set shell to bash
 
-set pastetoggle=<Insert>                   " Make Insert key toggle paste mode.
+set relativenumber                        " Make line numbers relative.
+set number                                " Actual Line number at current pos.
+autocmd WinLeave * :set norelativenumber  " Revert to regular when leave window.
+autocmd WinEnter * :set relativenumber
 
-set spell spelllang=en
-hi clear SpellBad
-hi SpellBad cterm=underline,bold
+set pastetoggle=<Insert>                  " Make Insert key toggle paste mode.
 
-" Spell check on
-set spell spelllang=en
-setlocal spell spelllang=en
+" We can save an open vim session with :mksession.
+set ssop-=options           " do not store global and local values in a session
+set ssop-=folds             " do not store folds
 
-" Spelling
-highlight clear SpellBad
-highlight SpellBad term=underline cterm=underline
-highlight clear SpellCap
-highlight SpellCap term=underline cterm=underline
-highlight clear SpellRare
-highlight SpellRare term=underline cterm=underline
-highlight clear SpellLocal
-highlight SpellLocal term=underline cterm=underline
+autocmd ColorScheme * call TweakColorscheme()
+function TweakColorscheme()
+  " Spell check on
+  set spell spelllang=en
+  setlocal spell spelllang=en
+  " Spelling highlighting
+  highlight clear SpellBad
+  highlight SpellBad term=underline cterm=underline
+  highlight clear SpellCap
+  highlight SpellCap term=underline cterm=underline
+  highlight clear SpellRare
+  highlight SpellRare term=underline cterm=underline
+  highlight clear SpellLocal
+  highlight SpellLocal term=underline cterm=underline
+endfunction
 
-
-" Loader for plugins. 
-execute pathogen#infect()
+" colorscheme heroku-terminal                     " Medium contrast. Blue, Grey.
+" colorscheme liquidcarbon                        " Classic.
+" colorscheme cobalt2 | set background=light      " Classic looks. Colorful.
+" colorscheme badwolf | set background=light      " High contrast,
+colorscheme gruvbox | set background=dark       " Pretty, low contrast.
+" colorscheme elflord | set background=light
+" colorscheme 256-jungle | set background=light   " Medium contrast.
+" colorscheme zenburn                             " Subtle.
 
 set laststatus=2  " Always show status line.
 
@@ -82,4 +93,3 @@ let g:syntastic_cpp_check_header = 1
 let g:syntastic_javascript_checkers = ['eslint']
 
 let g:syntastic_aggregate_errors = 1
-
